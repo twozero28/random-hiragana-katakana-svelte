@@ -1,35 +1,36 @@
 <script>
   import GithubIcon from "./GithubIcon.svelte";
+  import {isAuto, selectCharacter, time} from '../utils/stores.js';
 
-  let isAuto = true;
+  const autoCheckBox = crypto.randomUUID();
 
-  let character = 'both';
-
-  let time = 2.5;
   const times = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
+
 
 </script>
 
 <nav class="bar">
-  <div class="condition-container">
+  <div class="mode-container">
     <div>
-      <input id="autoCheckBox" type="checkbox" bind:checked={isAuto} />
-      <label for="autoCheckBox">Auto</label>
+      <input id={autoCheckBox} type="checkbox" bind:checked={$isAuto} />
+      <label for={autoCheckBox}>Auto</label>
     </div>
     <div>
-      <select bind:value={character}>
+      <select bind:value={$selectCharacter}>
         <option value="both">Both</option>
         <option value="hiragana">Hiragana</option>
-        <option value="Katakana">Katakana</option>
+        <option value="katakana">Katakana</option>
       </select>
     </div>
-    <div>
-      <select bind:value={time}>
-        {#each times as t}
-          <option value={t}>{t}</option>
-        {/each}
-      </select>
-    </div>
+    {#if $isAuto}
+      <div>
+        <select bind:value={$time}>
+          {#each times as t}
+            <option value={t}>{t}</option>
+          {/each}
+        </select>
+      </div>
+    {/if}
   </div>
   <GithubIcon/>
 </nav>
@@ -44,21 +45,18 @@
 
   label {
     cursor: pointer;
+    padding-left: 4px;
   }
 
-  .condition-container {
+  .mode-container {
     display: flex;
     align-items: center;
     column-gap: 0.5rem;
   }
 
-  .condition-container > div {
+  .mode-container > div {
     display: flex;
     align-items: center;
-  }
-
-  #autoCheckBox {
-    margin-right: 4px;
   }
 
 </style>
